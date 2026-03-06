@@ -1,42 +1,49 @@
 //Desktop computer: adds GPU type
 
-public class Desktop { 
+// Change to immutable class 
+public final class Desktop { 
     Computer computer; //Composition: Desktop has a Computer
     String GPUType=null;
 
+    // Make GPUType field private and final
+    private final String GPUType;
+    
     public Desktop(String CPU, String RAM, String disk, String GPUType) {
         //Inherited from Computer superclass
         this.computer = new Computer(CPU, RAM, disk);
 
         //Only in Desktop subclass
         this.GPUType=GPUType;
+        
+        
     }
-
-    //Setter
-    public void setGPUType(String GPUType) {
-        this.GPUType=GPUType;
+    
+    // Constructor for creating deep copies
+    public Desktop(Desktop copy) {
+    	this.computer = copy.computer;
+    	this.GPUType = new String(copy.GPUType);
     }
 
     //Getter for the Desktop along with repeats from the Computer class
     public String getGPUType() {
-        return this.GPUType;
+        return GPUType;
     }
 
     public String getCPU() {
-        return this.computer.getCPU();
+        return computer.getCPU();
     }
 
     public String getRAM() {
-        return this.computer.getRAM();
+        return computer.getRAM();
     }
 
     public String getDisk() {
-        return this.computer.getDisk();
+        return computer.getDisk();
     }
 
     //Return formatted version of data
-    public String toString() {
-        return "Type:Desktop\tCPU:" + this.computer.getCPU() + "\tRAM:" + this.computer.getRAM() + "\tDisk:" + this.computer.getDisk() + "\tGPU:" + this.GPUType;
+    public final String toString() {
+        return "Type:Desktop\tCPU:" + computer.getCPU() + "\tRAM:" + computer.getRAM() + "\tDisk:" + computer.getDisk() + "\tGPU:" + GPUType;
     }
 
 }
