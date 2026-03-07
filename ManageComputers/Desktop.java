@@ -2,10 +2,9 @@
 
 // Change to immutable class 
 public final class Desktop { 
-    Computer computer; //Composition: Desktop has a Computer
-    String GPUType=null;
 
-    // Make GPUType field private and final
+    // Make GPUType and computer fields private and final
+    private final Computer computer; //Composition: Desktop has a Computer
     private final String GPUType;
     
     public Desktop(String CPU, String RAM, String disk, String GPUType) {
