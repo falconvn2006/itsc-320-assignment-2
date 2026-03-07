@@ -13,13 +13,11 @@ public final class Desktop {
 
         //Only in Desktop subclass
         this.GPUType=GPUType;
-        
-        
     }
     
     // Constructor for creating deep copies
     public Desktop(Desktop copy) {
-    	this.computer = copy.computer;
+    	this.computer = new Computer(copy.getCPU(), copy.getRAM(), copy.getDisk());
     	this.GPUType = new String(copy.GPUType);
     }
 

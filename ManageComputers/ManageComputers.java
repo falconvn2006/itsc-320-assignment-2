@@ -21,7 +21,7 @@ public class ManageComputers {
         // ArrayList are Computer, not Laptop or Desktop, but since those are subclasses
         // of Computer they can be
         // stored in an ArrayLiust<Computer> anyway.
-        ArrayList<Computer> computers = new ArrayList<Computer>();
+        ArrayList<Object> computers = new ArrayList<Object>();
 
         Scanner s = new Scanner(System.in);
         String menuOption = "";
@@ -73,11 +73,11 @@ public class ManageComputers {
         System.out.println("A) Add Computer");
         System.out.println("D) Delete Computer");
         System.out.println("E) Edit Computer");
-        System.out.println("X) eXit");
+        System.out.println("X) Exit");
         System.out.println("----------");
 
         // Get menu selection from keyboard
-        System.out.print("Enter menu selection:");
+        System.out.print("Enter menu selection: ");
         menuOption = s.nextLine();
 
         menuOption = menuOption.toLowerCase(); // Make lower case for comparison purposes
@@ -88,7 +88,7 @@ public class ManageComputers {
     // -----------------------------
     // Show data for all laptops and desktops stored in ArrayList<Computer> create
     // in main() method
-    private static void showComputers(ArrayList<Computer> computers) {
+    private static void showComputers(ArrayList<Object> computers) {
         int computerListNumber = 0; // This variable is used to hold the "list number" for each computer, starting
                                     // at 1.
 
@@ -96,7 +96,7 @@ public class ManageComputers {
 
         System.out.println("LIST OF COMPUTERS:-");
 
-        for (Computer c : computers) {
+        for (Object c : computers) {
 
             computerListNumber++; // Increment list number for each computer
 
@@ -111,14 +111,14 @@ public class ManageComputers {
 
     // -----------------------------
     // Add a new Laptop or Desktop computer to the ArrayList<Computer>
-    private static void addComputer(ArrayList<Computer> computers, Scanner s) {
+    private static void addComputer(ArrayList<Object> computers, Scanner s) {
         String computerType = "";
 
         Computer tempComputer = null;
 
         System.out.println("ADDING COMPUTER:-");
 
-        System.out.println("Enter type of computer to add ('L' for Laptop, 'D' for Desktop):");
+        System.out.println("Enter type of computer to add ('L' for Laptop, 'D' for Desktop): ");
         computerType = getValidInput(s, TYPE_WHITELIST, true, "Invalid computer type entered! Allowed values: L or D");
 
         switch (computerType) {
@@ -129,7 +129,7 @@ public class ManageComputers {
                 // Get CPU, RAM and Disk info
                 tempComputer = getComputerData(s);
 
-                System.out.print("Enter screen size:");
+                System.out.print("Enter screen size: ");
                 String screenSize = getValidInput(s, SCREEN_WHITELIST, false,
                         "Invalid screen size entered! Allowed values: 13 or 14");
 
@@ -145,7 +145,7 @@ public class ManageComputers {
                 // Get CPU, RAM and Disk info
                 tempComputer = getComputerData(s);
 
-                System.out.print("Enter GPU:");
+                System.out.print("Enter GPU: ");
                 String GPUType = getValidInput(s, GPU_WHITELIST, false,
                         "Invalid GPU entered! Allowed values: Nvidia or AMD");
 
@@ -165,12 +165,12 @@ public class ManageComputers {
 
     // -----------------------------
     // Delete a specified computer from the ArrayList
-    private static void deleteComputer(ArrayList<Computer> computers, Scanner s) {
+    private static void deleteComputer(ArrayList<Object> computers, Scanner s) {
         int computerListNumberToDelete = 0;
 
         System.out.println("DELETE COMPUTER:-");
 
-        System.out.print("Enter number of computer to delete:");
+        System.out.print("Enter number of computer to delete: ");
         computerListNumberToDelete = Integer.parseInt(s.nextLine());
 
         // Check if computer list number is valid before deleting computer from list
@@ -188,14 +188,14 @@ public class ManageComputers {
     // Edit a computer. Since Laptop and Desktop are mutable classses/object get new
     // data values and replace old
     // attribute values in object being edited using object setter methods
-    private static void editComputer(ArrayList<Computer> computers, Scanner s) {
+    private static void editComputer(ArrayList<Object> computers, Scanner s) {
         int computerListNumberToEdit = 0;
         String computerType = "";
         Computer tempComputer = null;
 
         System.out.println("EDIT COMPUTER:-");
 
-        System.out.print("Enter number of computer to edit:");
+        System.out.print("Enter number of computer to edit: ");
         computerListNumberToEdit = Integer.parseInt(s.nextLine());
 
         // Check that computerListNumberToEdit is valid first
@@ -222,19 +222,14 @@ public class ManageComputers {
                     // Get CPU, RAM and Disk info, store in temporary Computer-type object
                     tempComputer = getComputerData(s);
 
-                    System.out.print("Enter screen size:");
+                    System.out.print("Enter screen size: ");
                     String screenSize = getValidInput(s, SCREEN_WHITELIST, false,
                             "Invalid screen size entered! Allowed values: 13 or 14");
 
                     // Get reference to the object in ArrayList<Computer> to edit
                     // Cast Computer to Laptop for setScreenSize call a few lines of code later
-                    Laptop laptopToEdit = (Laptop) computers.get(computerListNumberToEdit - 1);
-
-                    // Use setter methods to change mutable object state
-                    laptopToEdit.setCPU(tempComputer.getCPU());
-                    laptopToEdit.setRAM(tempComputer.getRAM());
-                    laptopToEdit.setDisk(tempComputer.getDisk());
-                    laptopToEdit.setScreenSize(screenSize);
+                    computers.set(computerListNumberToEdit - 1,
+                            new Laptop(tempComputer.getCPU(), tempComputer.getRAM(), tempComputer.getDisk(), screenSize));
 
                     break;
 
@@ -246,19 +241,14 @@ public class ManageComputers {
                     // Get CPU, RAM and Disk info
                     tempComputer = getComputerData(s);
 
-                    System.out.print("Enter GPU:");
+                    System.out.print("Enter GPU: ");
                     String GPUType = getValidInput(s, GPU_WHITELIST, false,
                             "Invalid GPU entered! Allowed values: Nvidia or AMD");
 
                     // Get reference to the object in ArrayList<Computer> to edit
                     // Cast Computer to Laptop for setScreenSize call a few lines of code later
-                    Desktop desktopToEdit = (Desktop) computers.get(computerListNumberToEdit - 1);
-
-                    // Use setter methods to change mutable object state
-                    desktopToEdit.setCPU(tempComputer.getCPU());
-                    desktopToEdit.setRAM(tempComputer.getRAM());
-                    desktopToEdit.setDisk(tempComputer.getDisk());
-                    desktopToEdit.setGPUType(GPUType);
+                    computers.set(computerListNumberToEdit - 1,
+                            new Desktop(tempComputer.getCPU(), tempComputer.getRAM(), tempComputer.getDisk(), GPUType));
 
                     break;
 
@@ -279,13 +269,13 @@ public class ManageComputers {
         String RAM = "";
         String disk = "";
 
-        System.out.print("Enter CPU:");
+        System.out.print("Enter CPU: ");
         CPU = getValidInput(s, CPU_WHITELIST, false, "Invalid CPU entered! Allowed values: i5 or i7");
 
-        System.out.print("Enter RAM:");
+        System.out.print("Enter RAM: ");
         RAM = getValidInput(s, RAM_WHITELIST, false, "Invalid RAM entered! Allowed values: 16 or 32");
 
-        System.out.print("Enter Disk:");
+        System.out.print("Enter Disk: ");
         disk = getValidInput(s, DISK_WHITELIST, false, "Invalid Disk entered! Allowed values: 512 or 1024");
 
         return new Computer(CPU, RAM, disk);
